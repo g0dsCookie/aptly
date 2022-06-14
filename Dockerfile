@@ -18,7 +18,7 @@ RUN set -eu \
  && chown aptly:aptly /data
 
 RUN set -eu \
- && apt-get update && apt-get install -y build-essential xz-utils lzop lz4 zstd gnupg && apt-get clean
+ && apt-get update && apt-get install -y build-essential xz-utils lzop lz4 zstd gnupg ca-certificates && apt-get clean
 
 COPY --chown=root:root docker-entrypoint.sh /
 RUN chmod 0555 /docker-entrypoint.sh
