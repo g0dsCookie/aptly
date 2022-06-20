@@ -25,6 +25,9 @@ done
 for source in "${!SOURCES[@]}"; do
     echo "Updating ${source}"
     aptly mirror update "${source}"
+    if aptly snapshot list -raw | grep -q "${source}-old"; then
+        aptly snapshot drop "${source}-old"
+    fi
     aptly snapshot rename "${source}" "${source}-old"
     aptly snapshot create "${source}" from mirror "${source}"
 done
