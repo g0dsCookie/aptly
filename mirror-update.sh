@@ -14,6 +14,11 @@ for publish_json in $(aptly publish list -json | jq -r '.[] | @base64'); do
     fi
 
     for source in "${sources[@]}"; do
+        snap_source_kind="$(aptly snapshot show -json "${source}" | jq -r '.SourceKind')"
+        if [[ "${snap_source_kind}" != "repo" ]]; then
+            echo "${source} has unknown SourceKind, skipping!"
+            continue
+        fi
         if [[ -z "${SOURCES[${source}]:-}" ]]; then
             SOURCES[${source}]="${prefix};${distribution}"
         else
